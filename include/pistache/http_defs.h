@@ -153,6 +153,7 @@ public:
     enum Directive { NoCache, NoStore, MaxAge, MaxStale, MinFresh,
                      NoTransform, OnlyIfCached,
                      Public, Private, MustRevalidate, ProxyRevalidate, SMaxAge,
+                     PreCheck, PostCheck,
                      Ext };
 
     CacheDirective()
@@ -175,6 +176,8 @@ private:
         uint64_t sMaxAge;
         uint64_t maxStale;
         uint64_t minFresh;
+        uint64_t preCheck;
+        uint64_t postCheck;
     } data;
 };
 

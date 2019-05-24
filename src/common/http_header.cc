@@ -115,6 +115,8 @@ CacheControl::parseRaw(const char* str, size_t len) {
         VALUE("max-age"  , MaxAge  ),
         VALUE("max-stale", MaxStale),
         VALUE("min-fresh", MinFresh),
+        VALUE("pre-check", PreCheck),
+        VALUE("post-check", PostCheck),
         VALUE("s-maxage" , SMaxAge )
     };
 
@@ -201,6 +203,10 @@ CacheControl::write(std::ostream& os) const {
                 return "max-stale";
             case CacheDirective::MinFresh:
                 return "min-fresh";
+            case CacheDirective::PreCheck:
+                return "pre-check";
+            case CacheDirective::PostCheck:
+                return "post-check";
             case CacheDirective::SMaxAge:
                 return "s-maxage";
             case CacheDirective::Ext:
@@ -216,6 +222,8 @@ CacheControl::write(std::ostream& os) const {
             case CacheDirective::MaxAge:
             case CacheDirective::MaxStale:
             case CacheDirective::MinFresh:
+            case CacheDirective::PreCheck:
+            case CacheDirective::PostCheck:
             case CacheDirective::SMaxAge:
                 return true;
             default:

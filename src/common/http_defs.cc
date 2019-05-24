@@ -66,6 +66,10 @@ CacheDirective::delta() const
             return std::chrono::seconds(data.maxStale);
         case MinFresh:
             return std::chrono::seconds(data.minFresh);
+        case PreCheck:
+            return std::chrono::seconds(data.preCheck);
+        case PostCheck:
+            return std::chrono::seconds(data.postCheck);
         default:
             throw std::domain_error("Invalid operation on cache directive");
     }
@@ -87,6 +91,12 @@ CacheDirective::init(Directive directive, std::chrono::seconds delta)
             break;
         case MinFresh:
             data.minFresh = delta.count();
+            break;
+        case PreCheck:
+            data.preCheck = delta.count();
+            break;
+        case PostCheck:
+            data.postCheck = delta.count();
             break;
         default:
             break;
