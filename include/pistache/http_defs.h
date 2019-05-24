@@ -16,15 +16,15 @@ namespace Pistache {
 namespace Http {
 
 #define HTTP_METHODS \
-    METHOD(Options, "OPTIONS") \
-    METHOD(Get, "GET") \
-    METHOD(Post, "POST") \
-    METHOD(Head, "HEAD") \
-    METHOD(Put, "PUT") \
-    METHOD(Patch, "PATCH") \
-    METHOD(Delete, "DELETE") \
-    METHOD(Trace, "TRACE") \
-    METHOD(Connect, "CONNECT")
+    HTTP_METHOD(Options, "OPTIONS") \
+    HTTP_METHOD(Get, "GET") \
+    HTTP_METHOD(Post, "POST") \
+    HTTP_METHOD(Head, "HEAD") \
+    HTTP_METHOD(Put, "PUT") \
+    HTTP_METHOD(Patch, "PATCH") \
+    HTTP_METHOD(Delete, "DELETE") \
+    HTTP_METHOD(Trace, "TRACE") \
+    HTTP_METHOD(Connect, "CONNECT")
 
 // 10. Status Code Definitions
 #define STATUS_CODES \
@@ -121,9 +121,9 @@ namespace Http {
 
 
 enum class Method {
-#define METHOD(m, _) m,
+#define HTTP_METHOD(m, _) m,
     HTTP_METHODS
-#undef METHOD
+#undef HTTP_METHOD
 };
 
 enum class Code {

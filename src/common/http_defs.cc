@@ -139,11 +139,11 @@ const char *versionString(Version version) {
 const char* methodString(Method method)
 {
     switch (method) {
-#define METHOD(name, str) \
+#define HTTP_METHOD(name, str) \
     case Method::name: \
         return str;
     HTTP_METHODS
-#undef METHOD
+#undef HTTP_METHOD
     }
 
     unreachable();
