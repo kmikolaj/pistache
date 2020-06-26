@@ -152,6 +152,9 @@ public:
             const Key& key, Fd fd, Polling::NotifyOn interest, Polling::Tag tag,
             Polling::Mode mode = Polling::Mode::Level);
 
+    void removeFd(
+            const Key& key, Fd fd);
+
     void runOnce();
     void run();
 
