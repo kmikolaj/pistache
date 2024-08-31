@@ -224,10 +224,10 @@ public:
     void addCustomHandler(Route::Handler handler);
 
     void addNotFoundHandler(Route::Handler handler);
-    inline bool hasNotFoundHandler() { return notFoundHandler != nullptr; }
+    inline bool hasNotFoundHandler() const { return notFoundHandler != nullptr; }
     void invokeNotFoundHandler(const Http::Request &req, Http::ResponseWriter resp) const;
 
-    Route::Status route(const Http::Request& request, Http::ResponseWriter response);
+    Route::Status route(const Http::Request& request, Http::ResponseWriter response) const;
 
     Router()
       : routes()

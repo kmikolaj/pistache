@@ -419,14 +419,19 @@ Router::invokeNotFoundHandler(const Http::Request &req, Http::ResponseWriter res
 }
 
 Route::Status
-Router::route(const Http::Request& req, Http::ResponseWriter response) {
+Router::route(const Http::Request& req, Http::ResponseWriter response) const {
     const auto resource = req.resource();
     if (resource.empty()) throw std::runtime_error("Invalid zero-length URL.");
 
-    auto& r = routes[req.method()];
+    std::tuple<std::shared_ptr<Route>, std::vector<TypedParam>,
+               std::vector<TypedParam>> result;
+
     const auto sanitized = SegmentTreeNode::sanitizeResource(resource);
     const std::string_view path {sanitized.data(), sanitized.size()};
-    auto result = r.findRoute(path);
+
+    const auto routesIt = routes.find(req.method());
+    if (routesIt != routes.end())
+        result = routesIt->second.findRoute(path);
 
     auto route = std::get<0>(result);
     if (route != nullptr) {
