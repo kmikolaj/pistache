@@ -47,8 +47,11 @@ namespace Async {
 
     class BadAnyCast : public std::bad_cast {
     public:
+        BadAnyCast() = default;
+        BadAnyCast(const BadAnyCast &) = default;
+        BadAnyCast &operator=(const BadAnyCast &) = default;
+        virtual ~BadAnyCast() = default;
         virtual const char* what() const noexcept { return "Bad any cast"; }
-        virtual ~BadAnyCast() { }
     };
 
     enum class State {
@@ -59,7 +62,10 @@ namespace Async {
 
     class PromiseBase {
     public:
-        virtual ~PromiseBase() { }
+        PromiseBase() = default;
+        PromiseBase(const PromiseBase &) = default;
+        PromiseBase& operator=(const PromiseBase &) = default;
+        virtual ~PromiseBase() = default;
         virtual bool isPending() const = 0;
         virtual bool isFulfilled() const = 0;
         virtual bool isRejected() const = 0;
