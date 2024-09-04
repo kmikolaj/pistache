@@ -183,7 +183,7 @@ public:
     }
 
     RawBuffer buffer() const {
-        return RawBuffer((const char*) data_.data(), pptr() - &data_[0]);
+        return RawBuffer(static_cast<const char*>(data_.data()), pptr() - &data_[0]);
     }
 
     void clear() {
