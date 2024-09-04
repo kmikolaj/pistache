@@ -200,6 +200,10 @@ namespace std {
         }
 
     public:
+#ifdef __clang__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wimplicit-fallthrough"
+#endif
         string_view::size_type
         operator()(const string_view &str) const {
             const size_t len = str.length();
@@ -250,6 +254,9 @@ namespace std {
             h1 = fmix32(h1);
             return hash<int>()(h1);
         }
+#ifdef __clang__
+#pragma GCC diagnostic pop
+#endif
 
 #undef FORCE_INLINE
     };
