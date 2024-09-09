@@ -13,6 +13,7 @@
 #include <iostream>
 #include <tuple>
 #include <functional>
+#include <cstdint>
 
 namespace Pistache {
 

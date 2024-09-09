@@ -9,6 +9,7 @@
 #include <type_traits>
 #include <climits>
 #include <iostream>
+#include <cstdint>
 
 namespace Pistache {
 
