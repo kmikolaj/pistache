@@ -150,12 +150,7 @@ Transport::handleIncoming(const std::shared_ptr<Peer>& peer) {
                     handler_->onInput(buffer, totalBytes, peer);
                 }
             } else {
-                if (errno == ECONNRESET) {
-                    handlePeerDisconnection(peer);
-                }
-                else {
-                    throw std::runtime_error(strerror(errno));
-                }
+                handlePeerDisconnection(peer);
             }
             break;
         }
