@@ -12,11 +12,12 @@
 
 #pragma once
 
+#include <pistache/compat.h>
+
 #include <cstddef>
 #include <ctime>
 #include <list>
 #include <map>
-#include <optional>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
@@ -35,11 +36,11 @@ namespace Pistache::Http
         std::string name;
         std::string value;
 
-        std::optional<std::string> path;
-        std::optional<std::string> domain;
-        std::optional<FullDate> expires;
+        compat::optional<std::string> path;
+        compat::optional<std::string> domain;
+        compat::optional<FullDate> expires;
 
-        std::optional<int> maxAge;
+        compat::optional<int> maxAge;
         bool secure;
         bool httpOnly;
 

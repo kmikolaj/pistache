@@ -170,7 +170,7 @@ namespace Pistache::Rest
             return it->second;
         }
 
-        std::optional<Path> PathGroup::path(const std::string& name,
+        compat::optional<Path> PathGroup::path(const std::string& name,
                                             Http::Method method) const
         {
             auto group = paths(name);
@@ -179,9 +179,9 @@ namespace Pistache::Rest
 
             if (it != std::end(group))
             {
-                return std::optional<Path>(*it);
+                return compat::optional<Path>(*it);
             }
-            return std::nullopt;
+            return compat::nullopt;
         }
 
         PathGroup::group_iterator PathGroup::add(Path path)

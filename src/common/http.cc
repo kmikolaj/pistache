@@ -589,13 +589,13 @@ namespace Pistache::Http
             params.insert(std::make_pair(std::move(name), std::move(value)));
         }
 
-        std::optional<std::string> Query::get(const std::string& name) const
+        compat::optional<std::string> Query::get(const std::string& name) const
         {
             auto it = params.find(name);
             if (it == std::end(params))
-                return std::nullopt;
+                return compat::nullopt;
 
-            return std::optional<std::string>(it->second);
+            return compat::optional<std::string>(it->second);
         }
 
         std::string Query::as_str() const

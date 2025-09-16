@@ -172,15 +172,15 @@ namespace Pistache::Http::Header
         return header.second;
     }
 
-    std::optional<Raw> Collection::tryGetRaw(const std::string& name) const
+    compat::optional<Raw> Collection::tryGetRaw(const std::string& name) const
     {
         auto it = rawHeaders.find(name);
         if (it == std::end(rawHeaders))
         {
-            return std::nullopt;
+            return compat::nullopt;
         }
 
-        return std::optional<Raw>(it->second);
+        return compat::optional<Raw>(it->second);
     }
 
     bool Collection::has(const std::string& name) const

@@ -12,9 +12,10 @@
 
 #pragma once
 
+#include <pistache/compat.h>
+
 #include <cassert>
 #include <cmath>
-#include <optional>
 #include <stdexcept>
 #include <string>
 #include <unordered_map>
@@ -198,10 +199,10 @@ namespace Pistache::Http::Mime
 
         std::string raw() const { return raw_; }
 
-        const std::optional<Q>& q() const { return q_; }
+        const compat::optional<Q>& q() const { return q_; }
         void setQuality(Q quality);
 
-        std::optional<std::string> getParam(const std::string& name) const;
+        compat::optional<std::string> getParam(const std::string& name) const;
         void setParam(const std::string& name, std::string value);
 
         std::string toString() const;
@@ -235,7 +236,7 @@ namespace Pistache::Http::Mime
 
         std::unordered_map<std::string, std::string> params;
 
-        std::optional<Q> q_;
+        compat::optional<Q> q_;
     };
 
     inline bool operator==(const MediaType& lhs, const MediaType& rhs)

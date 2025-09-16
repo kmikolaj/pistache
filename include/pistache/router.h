@@ -12,6 +12,8 @@
 
 #pragma once
 
+#include <pistache/compat.h>
+
 #include <memory>
 #include <regex>
 #include <string>
@@ -137,9 +139,9 @@ namespace Pistache::Rest
          */
         std::shared_ptr<char> resource_ref_;
 
-        std::unordered_map<std::string_view, std::shared_ptr<SegmentTreeNode>> fixed_;
-        std::unordered_map<std::string_view, std::shared_ptr<SegmentTreeNode>> param_;
-        std::unordered_map<std::string_view, std::shared_ptr<SegmentTreeNode>>
+        std::unordered_map<compat::string_view, std::shared_ptr<SegmentTreeNode>> fixed_;
+        std::unordered_map<compat::string_view, std::shared_ptr<SegmentTreeNode>> param_;
+        std::unordered_map<compat::string_view, std::shared_ptr<SegmentTreeNode>>
             optional_;
         std::shared_ptr<SegmentTreeNode> splat_;
         std::shared_ptr<Route> route_;
@@ -151,7 +153,7 @@ namespace Pistache::Rest
          */
         static std::regex multiple_slash;
 
-        static SegmentType getSegmentType(const std::string_view& fragment);
+        static SegmentType getSegmentType(const compat::string_view& fragment);
 
         /**
          * Fetches the route associated to a given path.
@@ -169,7 +171,7 @@ namespace Pistache::Rest
          */
         std::tuple<std::shared_ptr<Route>, std::vector<TypedParam>,
                    std::vector<TypedParam>>
-        findRoute(const std::string_view& path, std::vector<TypedParam>& params,
+        findRoute(const compat::string_view& path, std::vector<TypedParam>& params,
                   std::vector<TypedParam>& splats) const;
 
     public:
@@ -197,7 +199,7 @@ namespace Pistache::Rest
          * \param[in] resource_reference See SegmentTreeNode::resource_ref_ (private)
          * \throws std::runtime_error An empty path was given
          */
-        void addRoute(const std::string_view& path, const Route::Handler& handler,
+        void addRoute(const compat::string_view& path, const Route::Handler& handler,
                       const std::shared_ptr<char>& resource_reference);
 
         /**
@@ -210,7 +212,7 @@ namespace Pistache::Rest
          * - auth//login is invalid
          * \throws std::runtime_error An empty path was given
          */
-        bool removeRoute(const std::string_view& path);
+        bool removeRoute(const compat::string_view& path);
 
         /**
          * Finds the correct route for the given path.
@@ -226,7 +228,7 @@ namespace Pistache::Rest
          */
         std::tuple<std::shared_ptr<Route>, std::vector<TypedParam>,
                    std::vector<TypedParam>>
-        findRoute(const std::string_view& path) const;
+        findRoute(const compat::string_view& path) const;
     };
 
     class Router

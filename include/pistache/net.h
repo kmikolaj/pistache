@@ -12,6 +12,8 @@
 
 #pragma once
 
+#include <pistache/compat.h>
+
 #include <cstring>
 #include <limits>
 #include <stdexcept>
@@ -179,7 +181,7 @@ namespace Pistache
 
     namespace helpers
     {
-        inline Address httpAddr(const std::string_view& view)
+        inline Address httpAddr(const compat::string_view& view)
         {
             return Address(std::string(view));
         }

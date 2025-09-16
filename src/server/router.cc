@@ -83,12 +83,12 @@ namespace Pistache::Rest
     { }
 
     SegmentTreeNode::SegmentType
-    SegmentTreeNode::getSegmentType(const std::string_view& fragment)
+    SegmentTreeNode::getSegmentType(const compat::string_view& fragment)
     {
         auto optpos = fragment.find('?');
         if (fragment[0] == ':')
         {
-            if (optpos != std::string_view::npos)
+            if (optpos != compat::string_view::npos)
             {
                 if (optpos != fragment.length() - 1)
                 {
@@ -107,7 +107,7 @@ namespace Pistache::Rest
             return SegmentType::Splat;
         }
 
-        if (optpos != std::string_view::npos)
+        if (optpos != compat::string_view::npos)
         {
             throw std::runtime_error(
                 "Only optional parameters are currently supported");
@@ -128,7 +128,7 @@ namespace Pistache::Rest
     }
 
     void SegmentTreeNode::addRoute(
-        const std::string_view& path, const Route::Handler& handler,
+        const compat::string_view& path, const Route::Handler& handler,
         const std::shared_ptr<char>& resource_reference)
     {
         // recursion to correct path segment
@@ -139,11 +139,11 @@ namespace Pistache::Rest
             auto current_segment = path.substr(0, segment_delimiter);
             // complete child path (path without this segment)
             // if no '/' was found, it means that it is a leaf resource
-            const auto lower_path = (segment_delimiter == std::string_view::npos)
-                ? std::string_view { nullptr, 0 }
+            const auto lower_path = (segment_delimiter == compat::string_view::npos)
+                ? compat::string_view { nullptr, 0 }
                 : path.substr(segment_delimiter + 1);
 
-            std::unordered_map<std::string_view, std::shared_ptr<SegmentTreeNode>>* collection = nullptr;
+            std::unordered_map<compat::string_view, std::shared_ptr<SegmentTreeNode>>* collection = nullptr;
             const auto fragmentType                                                            = getSegmentType(current_segment);
             switch (fragmentType)
             {
@@ -187,7 +187,7 @@ namespace Pistache::Rest
     }
 
     bool Pistache::Rest::SegmentTreeNode::removeRoute(
-        const std::string_view& path)
+        const compat::string_view& path)
     {
         // recursion to correct path segment
         if (!path.empty())
@@ -197,11 +197,11 @@ namespace Pistache::Rest
             auto current_segment = path.substr(0, segment_delimiter);
             // complete child path (path without this segment)
             // if no '/' was found, it means that it is a leaf resource
-            const auto lower_path = (segment_delimiter == std::string_view::npos)
-                ? std::string_view { nullptr, 0 }
+            const auto lower_path = (segment_delimiter == compat::string_view::npos)
+                ? compat::string_view { nullptr, 0 }
                 : path.substr(segment_delimiter + 1);
 
-            std::unordered_map<std::string_view, std::shared_ptr<SegmentTreeNode>>* collection = nullptr;
+            std::unordered_map<compat::string_view, std::shared_ptr<SegmentTreeNode>>* collection = nullptr;
             auto fragmentType                                                                  = getSegmentType(current_segment);
             switch (fragmentType)
             {
@@ -243,7 +243,7 @@ namespace Pistache::Rest
     std::tuple<std::shared_ptr<Route>, std::vector<TypedParam>,
                std::vector<TypedParam>>
     Pistache::Rest::SegmentTreeNode::findRoute(
-        const std::string_view& path, std::vector<TypedParam>& params,
+        const compat::string_view& path, std::vector<TypedParam>& params,
         std::vector<TypedParam>& splats) const
     {
         // recursion to correct path segment
@@ -254,8 +254,8 @@ namespace Pistache::Rest
             auto current_segment = path.substr(0, segment_delimiter);
             // complete child path (path without this segment)
             // if no '/' was found, it means that it is a leaf resource
-            const auto lower_path = (segment_delimiter == std::string_view::npos)
-                ? std::string_view { nullptr, 0 }
+            const auto lower_path = (segment_delimiter == compat::string_view::npos)
+                ? compat::string_view { nullptr, 0 }
                 : path.substr(segment_delimiter + 1);
 
             // Check if it is a fixed route
@@ -343,7 +343,7 @@ namespace Pistache::Rest
 
     std::tuple<std::shared_ptr<Route>, std::vector<TypedParam>,
                std::vector<TypedParam>>
-    Pistache::Rest::SegmentTreeNode::findRoute(const std::string_view& path) const
+    Pistache::Rest::SegmentTreeNode::findRoute(const compat::string_view& path) const
     {
         std::vector<TypedParam> params;
         std::vector<TypedParam> splats;
@@ -448,7 +448,7 @@ namespace Pistache::Rest
             throw std::runtime_error("Invalid zero-length URL.");
         auto& r              = routes[method];
         const auto sanitized = SegmentTreeNode::sanitizeResource(resource);
-        const std::string_view path { sanitized.data(), sanitized.size() };
+        const compat::string_view path { sanitized.data(), sanitized.size() };
         r.removeRoute(path);
     }
 
@@ -506,7 +506,7 @@ namespace Pistache::Rest
 
         auto& r              = routes[req.method()];
         const auto sanitized = SegmentTreeNode::sanitizeResource(resource);
-        const std::string_view path { sanitized.data(), sanitized.size() };
+        const compat::string_view path { sanitized.data(), sanitized.size() };
         auto result = r.findRoute(path);
 
         auto route = std::get<0>(result);
@@ -577,7 +577,7 @@ namespace Pistache::Rest
         std::shared_ptr<char> ptr(new char[sanitized.length()],
                                   std::default_delete<char[]>());
         memcpy(ptr.get(), sanitized.data(), sanitized.length());
-        const std::string_view path { ptr.get(), sanitized.length() };
+        const compat::string_view path { ptr.get(), sanitized.length() };
         r.addRoute(path, handler, ptr);
     }
 

@@ -131,7 +131,7 @@ namespace Pistache
                     std::initializer_list<std::pair<const std::string, std::string>> params);
 
                 void add(std::string name, std::string value);
-                std::optional<std::string> get(const std::string& name) const;
+                compat::optional<std::string> get(const std::string& name) const;
                 bool has(const std::string& name) const;
                 // Return empty string or "?key1=value1&key2=value2" if query exist
                 std::string as_str() const;

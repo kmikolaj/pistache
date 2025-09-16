@@ -39,7 +39,7 @@ bool matchParams(
     const auto& s = SegmentTreeNode::sanitizeResource(req);
     std::shared_ptr<Route> route;
     std::vector<TypedParam> params;
-    std::string_view sv { s.data(), s.length() };
+    compat::string_view sv { s.data(), s.length() };
     std::tie(route, params, std::ignore) = routes.findRoute(sv);
 
     if (route == nullptr)
@@ -65,7 +65,7 @@ bool matchSplat(const SegmentTreeNode& routes, const std::string& req,
     const auto& s = SegmentTreeNode::sanitizeResource(req);
     std::shared_ptr<Route> route;
     std::vector<TypedParam> splats;
-    std::string_view sv { s.data(), s.length() };
+    compat::string_view sv { s.data(), s.length() };
     std::tie(route, std::ignore, splats) = routes.findRoute(sv);
 
     if (route == nullptr)
@@ -90,14 +90,14 @@ TEST(router_test, test_fixed_routes)
 {
     SegmentTreeNode routes;
     auto s = SegmentTreeNode::sanitizeResource("/v1/hello");
-    routes.addRoute(std::string_view { s.data(), s.length() }, nullptr, nullptr);
+    routes.addRoute(compat::string_view { s.data(), s.length() }, nullptr, nullptr);
 
     ASSERT_TRUE(match(routes, "/v1/hello"));
     ASSERT_FALSE(match(routes, "/v2/hello"));
     ASSERT_FALSE(match(routes, "/v1/hell0"));
 
     s = SegmentTreeNode::sanitizeResource("/a/b/c");
-    routes.addRoute(std::string_view { s.data(), s.length() }, nullptr, nullptr);
+    routes.addRoute(compat::string_view { s.data(), s.length() }, nullptr, nullptr);
     ASSERT_TRUE(match(routes, "/a/b/c"));
 }
 
@@ -105,12 +105,12 @@ TEST(router_test, test_parameters)
 {
     SegmentTreeNode routes;
     const auto& s = SegmentTreeNode::sanitizeResource("/v1/hello/:name/");
-    routes.addRoute(std::string_view { s.data(), s.length() }, nullptr, nullptr);
+    routes.addRoute(compat::string_view { s.data(), s.length() }, nullptr, nullptr);
 
     ASSERT_TRUE(matchParams(routes, "/v1/hello/joe", { { ":name", "joe" } }));
 
     const auto& p = SegmentTreeNode::sanitizeResource("/greetings/:from/:to");
-    routes.addRoute(std::string_view { p.data(), p.length() }, nullptr, nullptr);
+    routes.addRoute(compat::string_view { p.data(), p.length() }, nullptr, nullptr);
     ASSERT_TRUE(matchParams(routes, "/greetings/foo/bar",
                             { { ":from", "foo" }, { ":to", "bar" } }));
 }
@@ -119,7 +119,7 @@ TEST(router_test, test_optional)
 {
     SegmentTreeNode routes;
     auto s = SegmentTreeNode::sanitizeResource("/get/:key?/bar");
-    routes.addRoute(std::string_view { s.data(), s.length() }, nullptr, nullptr);
+    routes.addRoute(compat::string_view { s.data(), s.length() }, nullptr, nullptr);
 
     ASSERT_FALSE(matchParams(routes, "/get/bar", { { ":key", "whatever" } }));
     ASSERT_TRUE(matchParams(routes, "/get/foo/bar", { { ":key", "foo" } }));
@@ -129,7 +129,7 @@ TEST(router_test, test_splat)
 {
     SegmentTreeNode routes;
     auto s = SegmentTreeNode::sanitizeResource("/say/*/to/*");
-    routes.addRoute(std::string_view { s.data(), s.length() }, nullptr, nullptr);
+    routes.addRoute(compat::string_view { s.data(), s.length() }, nullptr, nullptr);
 
     ASSERT_TRUE(match(routes, "/say/hello/to/user"));
     ASSERT_FALSE(match(routes, "/say/hello/to"));
@@ -143,7 +143,7 @@ TEST(router_test, test_sanitize)
 {
     SegmentTreeNode routes;
     auto s = SegmentTreeNode::sanitizeResource("//v1//hello/");
-    routes.addRoute(std::string_view { s.data(), s.length() }, nullptr, nullptr);
+    routes.addRoute(compat::string_view { s.data(), s.length() }, nullptr, nullptr);
 
     ASSERT_TRUE(match(routes, "/v1/hello////"));
 }
@@ -153,8 +153,8 @@ TEST(router_test, test_mixed)
     SegmentTreeNode routes;
     auto s = SegmentTreeNode::sanitizeResource("/hello");
     auto p = SegmentTreeNode::sanitizeResource("/*");
-    routes.addRoute(std::string_view { s.data(), s.length() }, nullptr, nullptr);
-    routes.addRoute(std::string_view { p.data(), p.length() }, nullptr, nullptr);
+    routes.addRoute(compat::string_view { s.data(), s.length() }, nullptr, nullptr);
+    routes.addRoute(compat::string_view { p.data(), p.length() }, nullptr, nullptr);
 
     ASSERT_TRUE(match(routes, "/hello"));
     ASSERT_TRUE(match(routes, "/hi"));

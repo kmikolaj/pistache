@@ -31,7 +31,7 @@ TEST(mime_test, basic_test)
     ASSERT_EQ(m2.toString(), "application/xhtml+xml");
 
     auto m3 = MIME(Text, Plain);
-    ASSERT_FALSE(m3.q().has_value());
+    ASSERT_FALSE(m3.q());
     m3.setQuality(Q::fromFloat(0.7));
     ASSERT_EQ(m3.q().value_or(Q(0)), Q(70));
 
@@ -66,12 +66,12 @@ TEST(mime_test, valid_parsing_test)
 
     parse("application/json", [](const MediaType& m1) {
         ASSERT_EQ(m1, MIME(Application, Json));
-        ASSERT_FALSE(m1.q().has_value());
+        ASSERT_FALSE(m1.q());
     });
 
     parse("application/xhtml+xml", [](const MediaType& m2) {
         ASSERT_EQ(m2, MediaType(Type::Application, Subtype::Xhtml, Suffix::Xml));
-        ASSERT_FALSE(m2.q().has_value());
+        ASSERT_FALSE(m2.q());
     });
 
     parse("application/json; q=0.3", [](const MediaType& m3) {
@@ -120,7 +120,7 @@ TEST(mime_test, valid_parsing_test)
 
     parse("text/html; charset=ISO-8859-4", [](const MediaType& m10) {
         ASSERT_EQ(m10, MIME(Text, Html));
-        ASSERT_FALSE(m10.q().has_value());
+        ASSERT_FALSE(m10.q());
         auto charset = m10.getParam("charset");
         ASSERT_EQ(charset.value_or(""), "ISO-8859-4");
     });
@@ -179,12 +179,12 @@ TEST(mime_test, should_parse_case_insensitive_issue_179)
 {
     parse("Application/Json", [](const Mime::MediaType& mime) {
         ASSERT_EQ(mime, MIME(Application, Json));
-        ASSERT_FALSE(mime.q().has_value());
+        ASSERT_FALSE(mime.q());
     });
 
     parse("aPpliCAtion/Xhtml+XML", [](const MediaType& mime) {
         ASSERT_EQ(mime, MediaType(Type::Application, Subtype::Xhtml, Suffix::Xml));
-        ASSERT_FALSE(mime.q().has_value());
+        ASSERT_FALSE(mime.q());
     });
 
     parse("Application/Xhtml+XML; q=0.78", [](const MediaType& mime) {

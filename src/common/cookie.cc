@@ -13,9 +13,9 @@
 #include <pistache/config.h>
 #include <pistache/cookie.h>
 #include <pistache/stream.h>
+#include <pistache/compat.h>
 
 #include <iterator>
-#include <optional>
 #include <unordered_map>
 
 namespace Pistache::Http
@@ -43,10 +43,10 @@ namespace Pistache::Http
         struct AttributeMatcher;
 
         template <>
-        struct AttributeMatcher<std::optional<std::string>>
+        struct AttributeMatcher<compat::optional<std::string>>
         {
             static void match(StreamCursor& cursor, Cookie* obj,
-                              std::optional<std::string> Cookie::*attr)
+                              compat::optional<std::string> Cookie::*attr)
             {
                 auto token = matchValue(cursor);
                 obj->*attr = token.text();
@@ -54,10 +54,10 @@ namespace Pistache::Http
         };
 
         template <>
-        struct AttributeMatcher<std::optional<int>>
+        struct AttributeMatcher<compat::optional<int>>
         {
             static void match(StreamCursor& cursor, Cookie* obj,
-                              std::optional<int> Cookie::*attr)
+                              compat::optional<int> Cookie::*attr)
             {
                 auto token = matchValue(cursor);
 
@@ -89,10 +89,10 @@ namespace Pistache::Http
         };
 
         template <>
-        struct AttributeMatcher<std::optional<FullDate>>
+        struct AttributeMatcher<compat::optional<FullDate>>
         {
             static void match(StreamCursor& cursor, Cookie* obj,
-                              std::optional<FullDate> Cookie::*attr)
+                              compat::optional<FullDate> Cookie::*attr)
             {
                 auto token = matchValue(cursor);
                 obj->*attr = FullDate::fromString(token.text());
@@ -206,25 +206,25 @@ namespace Pistache::Http
     void Cookie::write(std::ostream& os) const
     {
         os << name << "=" << value;
-        if (path.has_value())
+        if (path)
         {
             const std::string& value = *path;
             os << "; ";
             os << "Path=" << value;
         }
-        if (domain.has_value())
+        if (domain)
         {
             const std::string& value = *domain;
             os << "; ";
             os << "Domain=" << value;
         }
-        if (maxAge.has_value())
+        if (maxAge)
         {
             int value = *maxAge;
             os << "; ";
             os << "Max-Age=" << value;
         }
-        if (expires.has_value())
+        if (expires)
         {
             const FullDate& value = *expires;
             os << "; ";

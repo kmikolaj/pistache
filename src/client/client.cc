@@ -25,6 +25,7 @@
 #include <memory>
 #include <sstream>
 #include <string>
+#include <tuple>
 
 namespace Pistache::Http::Experimental
 {
@@ -37,7 +38,7 @@ namespace Pistache::Http::Experimental
         // Using const_cast can result in undefined behavior.
         // C++17 provides a non-const .data() overload,
         // but url must be passed as a non-const reference (or by value)
-        std::pair<std::string_view, std::string_view> splitUrl(const std::string& url)
+        std::pair<compat::string_view, compat::string_view> splitUrl(const std::string& url)
         {
             RawStreamBuf<char> buf(const_cast<char*>(url.data()), url.size());
             StreamCursor cursor(&buf);
@@ -49,8 +50,8 @@ namespace Pistache::Http::Experimental
             StreamCursor::Token hostToken(cursor);
             match_until({ '?', '/' }, cursor);
 
-            std::string_view host(hostToken.rawText(), hostToken.size());
-            std::string_view page(cursor.offset(), buf.endptr() - buf.curptr());
+            compat::string_view host(hostToken.rawText(), hostToken.size());
+            compat::string_view page(cursor.offset(), buf.endptr() - buf.curptr());
 
             return std::make_pair(host, page);
         }
@@ -112,7 +113,9 @@ namespace Pistache::Http::Experimental
             using Http::crlf;
 
             const auto& res         = request.resource();
-            const auto [host, path] = splitUrl(res);
+            compat::string_view host;
+            compat::string_view path;
+            std::tie(host, path) = splitUrl(res);
             const auto& body        = request.body();
             const auto& query       = request.query();
 

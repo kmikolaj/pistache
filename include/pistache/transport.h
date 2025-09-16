@@ -16,12 +16,12 @@
 #include <pistache/mailbox.h>
 #include <pistache/reactor.h>
 #include <pistache/stream.h>
+#include <pistache/compat.h>
 
 #include <chrono>
 #include <deque>
 #include <memory>
 #include <mutex>
-#include <optional>
 #include <unordered_map>
 
 namespace Pistache::Tcp

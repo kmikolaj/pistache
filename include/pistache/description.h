@@ -12,10 +12,11 @@
 
 #pragma once
 
+#include <pistache/compat.h>
+
 #include <algorithm>
 #include <cstdint>
 #include <memory>
-#include <optional>
 #include <string>
 #include <type_traits>
 #include <vector>
@@ -158,8 +159,8 @@ namespace Pistache::Rest
             std::string description;
             std::string termsOfService;
 
-            std::optional<Contact> contact;
-            std::optional<License> license;
+            compat::optional<Contact> contact;
+            compat::optional<License> license;
         };
 
         struct InfoBuilder
@@ -309,7 +310,7 @@ namespace Pistache::Rest
             { }
 
             Group paths(const std::string& name) const;
-            std::optional<Path> path(const std::string& name, Http::Method method) const;
+            compat::optional<Path> path(const std::string& name, Http::Method method) const;
 
             group_iterator add(Path path);
 

@@ -357,15 +357,15 @@ namespace Pistache::Http::Mime
 
     void MediaType::setQuality(Q quality) { q_ = quality; }
 
-    std::optional<std::string> MediaType::getParam(const std::string& name) const
+    compat::optional<std::string> MediaType::getParam(const std::string& name) const
     {
         auto it = params.find(name);
         if (it == std::end(params))
         {
-            return std::nullopt;
+            return compat::nullopt;
         }
 
-        return std::optional<std::string>(it->second);
+        return compat::optional<std::string>(it->second);
     }
 
     void MediaType::setParam(const std::string& name, std::string value)
@@ -428,7 +428,7 @@ namespace Pistache::Http::Mime
             res += suffixString(suffix_);
         }
 
-        if (q_.has_value())
+        if (q_)
         {
             Q quality = *q_;
             res += "; ";
