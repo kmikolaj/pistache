@@ -121,9 +121,9 @@ namespace Pistache::Http
         using HttpMethods = std::unordered_map<std::string, Method>;
 
         const HttpMethods httpMethods = {
-#define METHOD(repr, str) { str, Method::repr },
+#define HTTP_METHOD(repr, str) { str, Method::repr },
             HTTP_METHODS
-#undef METHOD
+#undef HTTP_METHOD
         };
 
     } // namespace
