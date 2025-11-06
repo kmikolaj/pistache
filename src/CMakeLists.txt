@@ -26,8 +26,13 @@ set(bin_install_dir ${CMAKE_INSTALL_BINDIR})
 add_library(pistache_shared SHARED $<TARGET_OBJECTS:pistache>)
 add_library(pistache_static STATIC $<TARGET_OBJECTS:pistache>)
 
-target_link_libraries(pistache_shared pthread)
-target_link_libraries(pistache_static pthread)
+if (PISTACHE_USE_SSL)
+    target_link_libraries(pistache_shared PUBLIC OpenSSL::SSL OpenSSL::Crypto)
+    target_link_libraries(pistache_static PUBLIC OpenSSL::SSL OpenSSL::Crypto)
+else()
+    target_link_libraries(pistache_shared pthread)
+    target_link_libraries(pistache_static pthread)
+endif()
 
 set(Pistache_OUTPUT_NAME "pistache")
 set_target_properties(pistache_shared PROPERTIES

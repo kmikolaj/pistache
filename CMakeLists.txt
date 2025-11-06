@@ -78,7 +78,7 @@ set(CMAKE_CXX_STANDARD 11)
 
 if (PISTACHE_USE_SSL)
     add_definitions(-DPISTACHE_USE_SSL)
-    link_libraries(-lssl -lcrypto)
+    find_package(OpenSSL REQUIRED COMPONENTS SSL Crypto)
 endif (PISTACHE_USE_SSL)
 
 include_directories (${CMAKE_CURRENT_SOURCE_DIR}/include)
