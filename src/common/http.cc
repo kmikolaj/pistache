@@ -404,20 +404,26 @@ namespace Private {
         if (size == 0)
             return Final;
 
-        message->body_.reserve(size);
+        const size_t remaining = static_cast<size_t>(size) - bytesRead;
+
+        if (bytesRead == 0)
+            message->body_.reserve(size);
+
         StreamCursor::Token chunkData(cursor);
         const ssize_t available = cursor.remaining();
 
-        if (available < size) {
+        if (static_cast<size_t>(available) < remaining) {
             cursor.advance(available);
             message->body_.append(chunkData.rawText(), available);
+            bytesRead += static_cast<size_t>(available);
             return Incomplete;
         }
-        cursor.advance(size);
+        cursor.advance(remaining);
 
         if (!cursor.advance(2)) return Incomplete;
 
-        message->body_.append(chunkData.rawText(), size);
+        message->body_.append(chunkData.rawText(), remaining);
+        bytesRead = 0;
         return Complete;
     }
 
