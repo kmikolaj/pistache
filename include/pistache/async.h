@@ -643,7 +643,7 @@ namespace Async {
                     { }
 
                     void operator()() {
-                        auto core = this->chain_;
+                        auto core = this->chainCore;
                         core->state = State::Fulfilled;
 
                         for (const auto& req: chainCore->requests) {
