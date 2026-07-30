@@ -15,7 +15,7 @@ add_library(pistache OBJECT ${SOURCE_FILES})
 set_target_properties(pistache PROPERTIES POSITION_INDEPENDENT_CODE 1)
 add_definitions(-DONLY_C_LOCALE=1)
 
-target_include_directories(pistache PUBLIC
+target_include_directories(pistache SYSTEM PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include>
 )
 
